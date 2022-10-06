@@ -13,21 +13,42 @@ public class prompt4 {
         System.out.println("+---------------------------+");
         // option+shift+cursor -> 다중커서
     }
+    // 1. swith case - String
+    // 2. Plan class - refactoring
+
+    /**
+     * @param week 요일명
+     * @return 0-6 (0=su 6=sa)
+     */
 
     public int parseDay(String week) {
-        /**
-         * @param week 요일명
-         * @return 0-6 (0=su 6=sa)
-         */
-        if (week.equals("su")) return 0;
-        else if (week.equals("mo")) return 1;
-        else if (week.equals("tu")) return 2;
-        else if (week.equals("we")) return 3;
-        else if (week.equals("th")) return 4;
-        else if (week.equals("fr")) return 5;
-        else if (week.equals("sa")) return 6;
-        else
-            return 0;
+        switch (week) {
+            case "su":
+                return 0;
+            case "mo":
+                return 1;
+            case "tu":
+                return 2;
+            case "we":
+                return 3;
+            case "th":
+                return 4;
+            case "fr":
+                return 5;
+            case "sa":
+                return 6;
+            default:
+                return 0;
+        }
+//        if (week.equals("su")) return 0;
+//        else if (week.equals("mo")) return 1;
+//        else if (week.equals("tu")) return 2;
+//        else if (week.equals("we")) return 3;
+//        else if (week.equals("th")) return 4;
+//        else if (week.equals("fr")) return 5;
+//        else if (week.equals("sa")) return 6;
+//        else
+//            return 0;
     }
 
     //+---------------------------+
@@ -43,18 +64,29 @@ public class prompt4 {
         Scanner scanner = new Scanner(System.in);
         DayOfWeek3 cal = new DayOfWeek3();
 
-
-        while (true) {
+        boolean isLoop = true;
+        while (isLoop) {
             System.out.println("명령(1,2,3,h,q)");
             String cmd = scanner.next();
-            if (cmd.equals("1")) cmdRegister(scanner, cal);
-            else if (cmd.equals("2")) cmdSearch(scanner, cal);
-            else if (cmd.equals("3")) cmdCal(scanner, cal);
-            else if (cmd.equals("h")) printMenu();
-            else if (cmd.equals("q")) break;
+            switch (cmd) {
+                case "1":
+                    cmdRegister(scanner, cal);
+                case "2":
+                    cmdSearch(scanner, cal);
+                case "3":
+                    cmdCal(scanner, cal);
+                case "h":
+                    printMenu();
+                case "q":
+                    isLoop = false;
+                    break;
+//            if (cmd.equals("1")) cmdRegister(scanner, cal);
+//            else if (cmd.equals("2")) cmdSearch(scanner, cal);
+//            else if (cmd.equals("3")) cmdCal(scanner, cal);
+//            else if (cmd.equals("h")) printMenu();
+//            else if (cmd.equals("q")) break;
+            }
         }
-
-
         System.out.println("End.");
         scanner.close();
     }
@@ -65,10 +97,10 @@ public class prompt4 {
         String date = s.next();
         System.out.println("일정을 입력해주세요 (문장의 끝에 ;입력)");
         String text = "";
-        while(true){
+        while (true) {
             String word = s.next();
-            text+=word+" ";
-            if (word.endsWith(";")){
+            text += word + " ";
+            if (word.endsWith(";")) {
                 break;
             }
         }
@@ -80,9 +112,9 @@ public class prompt4 {
         System.out.println("날짜를 입력해주세요 : (yyyy-MM-dd)");
         String date = s.next();
         String plan = s.nextLine();
-        try{
+        try {
             plan = c.searchPlan(date);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             System.err.println("일정 검색 중 오류 발생");
         }
