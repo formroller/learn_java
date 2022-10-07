@@ -1,5 +1,3 @@
-import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Scanner;
 
 // 일정등록 기능 추가
@@ -71,12 +69,16 @@ public class prompt4 {
             switch (cmd) {
                 case "1":
                     cmdRegister(scanner, cal);
+                    break;
                 case "2":
                     cmdSearch(scanner, cal);
+                    break;
                 case "3":
                     cmdCal(scanner, cal);
+                    break;
                 case "h":
                     printMenu();
+                    break;
                 case "q":
                     isLoop = false;
                     break;
@@ -91,34 +93,46 @@ public class prompt4 {
         scanner.close();
     }
 
-    private void cmdRegister(Scanner s, DayOfWeek3 c) {
-        System.out.println("[새 일정 등록]");
-        System.out.println("날짜를 입력해주세요 : (yyyy-MM-dd)");
-        String date = s.next();
-        System.out.println("일정을 입력해주세요 (문장의 끝에 ;입력)");
-        String text = "";
-        while (true) {
-            String word = s.next();
-            text += word + " ";
-            if (word.endsWith(";")) {
-                break;
+    private void cmdRegister(Scanner s, DayOfWeek3 c){ //throws 실패 ->  try-catch문으로 대체
+        try {
+            System.out.println("[새 일정 등록]");
+            System.out.println("날짜를 입력해주세요 : (yyyy-MM-dd)");
+            String date = s.next();
+            String text = "";
+            System.out.println("일정을 입력해주세요 (문장의 끝에 ;입력)");
+            String word;
+            while (!(word = s.next()).endsWith(";")) {
+                text += word + " ";
             }
-        }
-        c.registerPlan(date, text);
+            word = word.replace(";", "");
+            text += word;
+            c.registerPlan(date, text);
+
+        }catch (Exception e){
+                e.printStackTrace();
+            }
+
     }
+
 
     private void cmdSearch(Scanner s, DayOfWeek3 c) {
         System.out.println("[일정 검색]");
         System.out.println("날짜를 입력해주세요 : (yyyy-MM-dd)");
         String date = s.next();
-        String plan = s.nextLine();
-        try {
-            plan = c.searchPlan(date);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("일정 검색 중 오류 발생");
+        String text = "";
+        PlanItem plan;
+        plan = c.searchPlan(date);
+//        try {
+//            plan = c.searchPlan(date);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            System.err.println("일정 검색 중 오류 발생");
+//        }
+        if (plan != null) {
+            System.out.println(plan.detail);
+        } else {
+            System.out.println("일정이 없습니다.");
         }
-        System.out.println(plan);
     }
 
     private void cmdCal(Scanner s, DayOfWeek3 c) {
